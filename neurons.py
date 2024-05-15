@@ -27,9 +27,6 @@ y = data.iloc[:, 1].values  # Adjust column index if necessary
 if len(y.shape) > 1:
     y = y.squeeze()
 
-# Check shape of y
-print("Shape of y:", y.shape)
-
 # Step 2: Apply ALS to estimate the baseline
 baseline = baseline_als(y, lam=1e4, p=0.05)
 
@@ -38,13 +35,11 @@ corrected_signal = y - baseline
 
 peaks, _ = find_peaks(corrected_signal, height=8)
 
-# Step 4: Plot the original and corrected signals
-plt.plot(corrected_signal, label='Corrected Signal', color='green')
-plt.plot(peaks, corrected_signal[peaks], "x")
-plt.legend()
+# Step 4: Plot vertical lines at peak positions
+plt.figure(figsize=(8, 6))
+plt.vlines(x=peaks, ymin=0, ymax=5, color='red', linestyle='dashed')
 plt.xlabel('Index')
 plt.ylabel('Amplitude')
-plt.title('Baseline Correction using Asymmetric Least Squares')
+plt.title('Detected Peaks')
+plt.grid(True)
 plt.show()
-
-
